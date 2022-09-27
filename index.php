@@ -1,26 +1,24 @@
+<!-- 
+ * Case 1 - [Generate User];
+ * - convert case1 program to generate random user function
+ * - random user function will return user list
+ *
+ * Case 2 -[Add User];
+ * - create addUser function 
+ * - add new user lists from generate random user function using addUser function
+ * - return user lists and show data with html
+ *
+ * Case 3 - [Delete];
+ * - create delete function 
+ * - delete target user from userlist using delete function
+ *
+ * Case 4 - [Update];
+ * - create update function 
+ * - update target user from userlist using update function
+ -->
+ <?php
 
-<?php 
-/**
- * Tutorial - Example001
- * 
- * Case 1;
- * - generate random email type [aungaung@hotmail.com, aungaung@gmail.com, aungaung@outlook.com]
- * - generate random email name 
- * - generate random password [min:6 digit and max:16 digit]
- * - generate random status [true, false]
- * - generate random user full name [min:3, max: 6 words]
- * - generate randon user words [min:2, max:6 chars]
- * 
- * Case 2;
- * @var users                   Array - multidimissioinal array
- * @var newUser                 Array - single array
- * 
- * - generate new user array and push on users array
- * - show users array with html template
- * 
- * Case 3;
- * create git account and push souce code
-*/
+
 
 
 function getRandomWords() {
@@ -48,12 +46,11 @@ function getRandomEmail(){
   return $email;
 };
 
-
 $users=[];
-  for($x=0;$x<=5;$x++){
+  for($x=0;$x<=50;$x++){
     $get_random =rand(0,1);
     $status =true;
-    if($get_random===1){
+    if($get_random ===1){
       $status=true;
     }else{
       $status=0;
@@ -63,11 +60,86 @@ $users=[];
       "email"=>getRandomEmail(),
       "password"=>getRandomPassword(),
       "status" =>$status,
-      "user_name"=>getRandomName(),
+      "username"=>getRandomName(),
       
       ];
     array_push($users,$newUser);
+
   }
+
+
+function addUser($addArray,$user){
+      if(!isset($user['email'])){
+        return "email is required";
+        }else if(!isset($user['password'])){
+          return "password is required";
+        }else if(isset($user['password']) && strlen($user['password']<6)){
+          return "password must be 6 digits";
+        }else if (!isset($user['username'])){
+          return "username is required";
+        }else{
+  array_push($addArray,$user);
+  return $addArray;
+};
+};
+
+
+$users =addUser($users,
+
+$addnewuser=[ 
+  "ID" =>$x,
+  "email" => "GIgI@gmail.com",
+  "password" => "123456",
+  "status" => true,
+  "username"=> "TinTin" 
+],
+
+
+
+);
+
+$users =addUser($users,[
+  "ID" =>$x +1,
+  "email" => "2ei29I@gmail.com",
+  "password" => "123456",
+  "status" => true,
+  "username"=> "WINWIN" 
+]);
+$users =addUser($users,[
+  "ID" =>$x +2,
+  "email" => "CCC@gmail.com",
+  "password" => "1234562323",
+  "status" => true,
+  "username"=> "PPPWIN" 
+]);
+//Deleting users**//
+unset($users[5]);
+unset($users[0]);
+//                 //
+
+function updateUser( $name, $user , $array){
+
+  for($i=0; $i<count($array); $i++){
+    if($array[$i]['username'] === $name){
+      
+      $array[$i] = $user;
+    }
+  }
+  
+  return $array;
+}
+
+
+$toUpdateUser = [
+  "ID" => 52,
+  "email" => "qq@gmail.com",
+  "password" => "qqqqqqq",
+  "status" => true,
+  "username"=> "teewerrw" 
+];
+
+  $users = updateUser('WINWIN', $toUpdateUser, $users);
+
 
 
 
@@ -75,20 +147,58 @@ $users=[];
 <html>
   <head>
     <title> PHP Tutorial </title>
+    <style>
+            table {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-collapse: collapse;
+            }
+
+            table > thead > tr > th {
+                background-color: #ddd;
+            }
+
+            table > thead > tr > th,
+            table > tbody > tr > td {
+                text-align: left;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            
+
+        </style>
 </head>
 <body>
-  <ul>
+<table>
+            <thead>
+                <tr>
+                    <th> ID </th>
+                    <th> Email </th>
+                    <th> Password </th>
+                    <th>Username</th>
+                    <th> Status </th>
+                    <th> Delete </th>
+                    <th> Update</th>
+                </tr>
+            </thead>
 
-    <?php foreach($users as $key => $user ){?>
-      <li>ID : <?php echo $user ['ID'];?></li>
-      <li>Email:  <?php echo $user['email'];?> </li>
-      <li> Password :<?php echo $user['password'];?> </li>
-      <li> Status :<?php echo $user['status'];?> </li>
-      <li> User Full Name :<?php echo $user['user_name'];?> </li>
-      <br>
-     <?php }  ?>
-
-
-</ul>
+            <tbody>
+                <?php foreach($users as $key=>$user) { ?>
+                    <tr>
+                        <td> <?php echo $user['ID']; ?> </td>
+                        <td> <?php echo $user['email']; ?> </td>
+                        <td> <?php echo $user['password']; ?> </td>
+                        <td> <?php echo $user['username']; ?> </td>
+                        <td> <?php echo $user['status']; ?> </td>
+                        
+                        <td> <input type="submit" class="btn btn-danger" value="DELETE" name="delete" > </td>
+                        <td> <input type="submit" class="btn btn-danger" value="UPDATE" name="update"> </td>
+          
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
 </body>
-  </html>
+  </html> 
